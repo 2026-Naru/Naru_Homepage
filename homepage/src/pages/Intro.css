@@ -1,0 +1,279 @@
+@font-face {
+    font-family: 'PartialSans';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/PartialSansKR-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #000;
+}
+
+#root {
+    width: 100%;
+    border: 0;
+    text-align: initial;
+}
+
+.intro {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    color: #fff;
+    font-family: 'Pretendard', system-ui, sans-serif;
+    background-position: center;
+    background-size: cover;
+    isolation: isolate;
+}
+
+.intro::before,
+.intro::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.intro::before {
+    background:
+        linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.9) 17%, rgba(0, 0, 0, 0.2) 46%, rgba(105, 39, 20, 0.62) 100%),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.06) 50%, rgba(0, 0, 0, 0.35));
+}
+
+.intro::after {
+    top: 45%;
+    background: linear-gradient(180deg, transparent 0%, rgba(255, 95, 48, 0.2) 100%);
+    mix-blend-mode: screen;
+}
+
+.intro__nav {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    padding: 35px 5vw 0;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.intro__nav a {
+    color: #ff6b3d;
+    text-decoration: none;
+}
+
+.intro__nav a:nth-child(2) {
+    justify-self: center;
+}
+
+.intro__nav a:nth-child(3) {
+    justify-self: end;
+}
+
+.intro__hero {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 76svh;
+    padding: 200px 24px 0;
+}
+
+.intro__copy {
+    text-align: center;
+}
+
+.intro__copy h1 {
+    margin-top: 100px;
+    margin: 0;
+    color: #ff6b3d;
+    font-family: 'PartialSans', 'Pretendard', system-ui, sans-serif;
+    font-size: 350px;
+    font-weight: 400;
+    line-height: 0.78;
+    letter-spacing: 0;
+}
+
+.intro__copy p {
+    margin-top: 100px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.42;
+    text-align: center;
+}
+
+.intro__mockup {
+    position: absolute;
+    left: 45%;
+    bottom: -300px;
+    width: 1400px;
+    transform: translateX(-42%);
+    filter: drop-shadow(0 28px 36px rgba(0, 0, 0, 0.42));
+}
+
+.intro__overview {
+    position: absolute;
+    z-index: 3;
+    left: 4vw;
+    bottom: 15%;
+    width: min(360px, 35vw);
+}
+
+.intro__overview h2 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 300px;
+    min-height: 80px;
+    margin: 0 0 28px;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 10px;
+    color: #ff6b3d;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.04);
+    font-family: 'Pretendard', system-ui, sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.intro__overview p {
+    margin: 0;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.45;
+    word-break: keep-all;
+}
+
+@media (max-width: 900px) {
+    .intro {
+        min-height: 760px;
+    }
+
+    .intro__nav {
+        padding-inline: 24px;
+    }
+
+    .intro__hero {
+        min-height: 560px;
+        padding-top: 100px;
+    }
+
+    .intro__mockup {
+        bottom: -74px;
+        width: 648px;
+        min-width: 0;
+        max-width: 86vw;
+        transform: translateX(-44%);
+    }
+
+    .intro__overview {
+        left: 24px;
+        right: 24px;
+        bottom: 32px;
+        width: auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .intro {
+        min-height: 720px;
+    }
+
+    .intro__nav {
+        font-size: 11px;
+    }
+
+    .intro__copy h1 {
+        font-size: clamp(70px, 24vw, 112px);
+    }
+
+    .intro__copy p,
+    .intro__overview p {
+        font-size: 12px;
+    }
+
+    .intro__mockup {
+        bottom: 80px;
+        width: 504px;
+    }
+
+    .intro__overview {
+        bottom: 26px;
+    }
+
+    .intro__overview h2 {
+        margin-bottom: 18px;
+    }
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2');
+    font-weight: 900;
+    font-display: swap;
+}
