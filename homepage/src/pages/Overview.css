@@ -1,0 +1,305 @@
+@font-face {
+    font-family: 'PartialSans';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/PartialSansKR-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+}
+
+.overview-page {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    color: #fff;
+    background:
+        radial-gradient(circle at calc(var(--pointer-x) + 220px) var(--pointer-y), rgba(255, 103, 57, 0.18), transparent 28rem),
+        radial-gradient(circle at 78% 52%, rgba(255, 82, 35, 0.18), transparent 24rem),
+        #000;
+    font-family: 'Pretendard', system-ui, sans-serif;
+    isolation: isolate;
+}
+
+.overview-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 152px 100%, 100% 152px;
+    opacity: 0.18;
+    pointer-events: none;
+}
+
+.overview-page::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 34%;
+    z-index: -1;
+    background: linear-gradient(180deg, transparent, rgba(96, 32, 16, 0.24));
+    pointer-events: none;
+}
+
+.overview-page__content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(420px, 600px);
+    gap: clamp(48px, 8vw, 142px);
+    align-items: center;
+    min-height: 100svh;
+    width: min(1518px, calc(100% - 120px));
+    margin: 0 auto;
+    padding: 72px 0;
+}
+
+.overview-page__copy {
+    max-width: 710px;
+}
+
+.overview-page__eyebrow,
+.overview-page__background h2 {
+    margin: 0;
+    color: #ff6b3d;
+    font-size: 23px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.overview-page__eyebrow {
+    margin-bottom: 66px;
+    opacity: 0;
+    transform: translateY(32px);
+    transition:
+        opacity 680ms ease,
+        transform 680ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.overview-page__copy h1 {
+    margin: 0;
+    color: #fff;
+    font-family: 'PartialSans', 'Pretendard', system-ui, sans-serif;
+    font-size: clamp(52px, 4.4vw, 78px);
+    font-weight: 400;
+    line-height: 1.16;
+    letter-spacing: 0;
+    text-shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+    word-break: keep-all;
+    opacity: 0;
+    transform: translateY(36px);
+    transition:
+        opacity 760ms ease 120ms,
+        transform 760ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+
+.overview-page__copy h1 span {
+    color: #ff6b3d;
+}
+
+.overview-page__lead {
+    margin: 28px 0 0;
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.5;
+    word-break: keep-all;
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity 700ms ease 240ms,
+        transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 240ms;
+}
+
+.overview-page__background {
+    margin-top: clamp(84px, 15vh, 152px);
+}
+
+.overview-page__background h2 {
+    margin-bottom: 28px;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+        opacity 700ms ease 360ms,
+        transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 360ms;
+}
+
+.overview-page__background p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.48;
+    word-break: keep-all;
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+        opacity 700ms ease 460ms,
+        transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 460ms;
+}
+
+.overview-page__background p + p {
+    margin-top: 32px;
+    transition-delay: 560ms;
+}
+
+.overview-page__visuals {
+    display: grid;
+    gap: 18px;
+}
+
+.overview-page__highlight {
+    color: #fff;
+    font-weight: 800;
+}
+
+.overview-page__highlight-line {
+    display: inline;
+    padding: 0 4px 1px;
+    background:
+        linear-gradient(transparent 38%, rgba(255, 107, 61, 0.88) 38% 88%, transparent 88%);
+    background-repeat: no-repeat;
+    background-size: 0 100%;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.overview-page__card {
+    display: block;
+    width: 120%;
+    aspect-ratio: 804 / 397;
+    border-radius: 15px;
+    object-fit: cover;
+    opacity: 0;
+    transform: translateY(52px);
+    transition:
+        opacity 780ms ease,
+        transform 780ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.overview-page__card:nth-child(1) {
+    transition-delay: 320ms;
+}
+
+.overview-page__card:nth-child(2) {
+    transition-delay: 460ms;
+}
+
+.overview-page__card:nth-child(3) {
+    transition-delay: 600ms;
+}
+
+.overview-page--visible .overview-page__eyebrow,
+.overview-page--visible .overview-page__copy h1,
+.overview-page--visible .overview-page__lead,
+.overview-page--visible .overview-page__background h2,
+.overview-page--visible .overview-page__background p,
+.overview-page--visible .overview-page__card {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.overview-page--visible .overview-page__highlight-line {
+    animation: overview-highlight 900ms cubic-bezier(0.22, 1, 0.36, 1) 900ms forwards;
+}
+
+.overview-page--visible .overview-page__highlight-line--second {
+    animation-delay: 1180ms;
+}
+
+@keyframes overview-highlight {
+    to {
+        background-size: 100% 100%;
+    }
+}
+
+@media (max-width: 1100px) {
+    .overview-page__content {
+        grid-template-columns: 1fr;
+        gap: 54px;
+        width: min(760px, calc(100% - 48px));
+        padding: 72px 0 56px;
+    }
+
+    .overview-page__eyebrow {
+        margin-bottom: 40px;
+    }
+
+    .overview-page__background {
+        margin-top: 72px;
+    }
+
+    .overview-page__visuals {
+        transform: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .overview-page__content {
+        width: min(100% - 36px, 520px);
+        padding-top: 52px;
+    }
+
+    .overview-page__eyebrow,
+    .overview-page__background h2 {
+        font-size: 18px;
+    }
+
+    .overview-page__copy h1 {
+        font-size: clamp(38px, 12vw, 52px);
+    }
+
+    .overview-page__lead,
+    .overview-page__background p {
+        font-size: 16px;
+    }
+
+    .overview-page__lead br {
+        display: none;
+    }
+
+    .overview-page__highlight br {
+        display: block;
+    }
+
+    .overview-page__background {
+        margin-top: 56px;
+    }
+
+    .overview-page__card {
+        border-radius: 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .overview-page__copy,
+    .overview-page__visuals,
+    .overview-page__eyebrow,
+    .overview-page__copy h1,
+    .overview-page__lead,
+    .overview-page__background h2,
+    .overview-page__background p,
+    .overview-page__card,
+    .overview-page__highlight-line {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    .overview-page__highlight-line {
+        background-size: 100% 100%;
+    }
+}
