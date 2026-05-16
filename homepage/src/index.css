@@ -54,6 +54,10 @@ body {
   margin: 0;
 }
 
+html {
+  overscroll-behavior-y: none;
+}
+
 #root {
   width: 1126px;
   max-width: 100%;
