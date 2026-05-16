@@ -25,9 +25,19 @@ body {
     overflow: hidden;
     color: #fff;
     font-family: 'Pretendard', system-ui, sans-serif;
-    background-position: center;
+    background-position:
+        calc(50% + var(--bg-shift-x))
+        calc(50% + var(--bg-shift-y));
     background-size: cover;
     isolation: isolate;
+    opacity: 0;
+    transition:
+        opacity 900ms ease,
+        background-position 220ms ease-out;
+}
+
+.intro--ready {
+    opacity: 1;
 }
 
 .intro::before,
@@ -41,14 +51,44 @@ body {
 
 .intro::before {
     background:
+        radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(255, 122, 82, 0.26), transparent 24rem),
         linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.9) 17%, rgba(0, 0, 0, 0.2) 46%, rgba(105, 39, 20, 0.62) 100%),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.06) 50%, rgba(0, 0, 0, 0.35));
+        linear-gradient(90deg, rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.08) 50%, rgba(0, 0, 0, 0.42));
+    opacity: 0.96;
 }
 
 .intro::after {
     top: 45%;
-    background: linear-gradient(180deg, transparent 0%, rgba(255, 95, 48, 0.2) 100%);
+    background:
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 140px),
+        linear-gradient(180deg, transparent 0%, rgba(255, 95, 48, 0.22) 100%);
     mix-blend-mode: screen;
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+        opacity 1100ms ease 250ms,
+        transform 1100ms ease 250ms;
+}
+
+.intro--ready::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.intro__spotlight {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        linear-gradient(120deg, transparent 0 36%, rgba(255, 255, 255, 0.13) 45%, transparent 55% 100%);
+    mix-blend-mode: overlay;
+    opacity: 0;
+    transform: translateX(-32%);
+}
+
+.intro--ready .intro__spotlight {
+    animation: intro-sweep 1400ms cubic-bezier(0.22, 1, 0.36, 1) 450ms both;
 }
 
 .intro__nav {
@@ -60,11 +100,38 @@ body {
     padding: 35px 5vw 0;
     font-size: 18px;
     font-weight: 800;
+    opacity: 0;
+    transform: translateY(-14px);
+    transition:
+        opacity 700ms ease 260ms,
+        transform 700ms ease 260ms;
+}
+
+.intro--ready .intro__nav {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .intro__nav a {
     color: #ff6b3d;
     text-decoration: none;
+    transition:
+        color 180ms ease,
+        transform 180ms ease,
+        text-shadow 180ms ease;
+}
+
+.intro__nav a:hover,
+.intro__nav a:focus-visible {
+    color: #ff875f;
+    text-shadow: 0 0 22px rgba(255, 107, 61, 0.45);
+    transform: translateY(-2px);
+}
+
+.intro__nav a:focus-visible {
+    outline: 2px solid rgba(255, 132, 92, 0.72);
+    outline-offset: 6px;
+    border-radius: 999px;
 }
 
 .intro__nav a:nth-child(2) {
@@ -86,7 +153,24 @@ body {
 }
 
 .intro__copy {
+    position: relative;
+    z-index: 3;
     text-align: center;
+}
+
+.intro__eyebrow {
+    display: inline-flex;
+    margin-bottom: 24px;
+    color: rgba(255, 230, 220, 0.78);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+        opacity 700ms ease 520ms,
+        transform 700ms ease 520ms;
 }
 
 .intro__copy h1 {
@@ -98,6 +182,14 @@ body {
     font-weight: 400;
     line-height: 0.78;
     letter-spacing: 0;
+    text-shadow:
+        0 4px 0 rgba(95, 23, 5, 0.28),
+        0 34px 58px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transform: translateY(34px) scale(0.96);
+    transition:
+        opacity 900ms cubic-bezier(0.22, 1, 0.36, 1) 620ms,
+        transform 900ms cubic-bezier(0.22, 1, 0.36, 1) 620ms;
 }
 
 .intro__copy p {
@@ -107,15 +199,53 @@ body {
     font-weight: 600;
     line-height: 1.42;
     text-align: center;
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+        opacity 780ms ease 830ms,
+        transform 780ms ease 830ms;
 }
 
-.intro__mockup {
+.intro--ready .intro__eyebrow,
+.intro--ready .intro__copy h1,
+.intro--ready .intro__copy p {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.intro__mockup-shell {
     position: absolute;
     left: 45%;
     bottom: -300px;
     width: 1400px;
-    transform: translateX(-42%);
+    max-width: none;
+    transform:
+        translateX(calc(-42% + var(--mockup-shift-x)))
+        translateY(var(--mockup-shift-y))
+        rotateX(var(--mockup-tilt-x))
+        rotateY(var(--mockup-tilt-y));
+    transform-style: preserve-3d;
+    opacity: 0;
+    perspective: 1400px;
+    transition:
+        opacity 950ms cubic-bezier(0.22, 1, 0.36, 1) 760ms,
+        transform 220ms ease-out;
+}
+
+.intro--ready .intro__mockup-shell {
+    opacity: 1;
+}
+
+.intro__mockup {
+    display: block;
+    width: 100%;
     filter: drop-shadow(0 28px 36px rgba(0, 0, 0, 0.42));
+    transform: translateY(90px) scale(0.965);
+    transition: transform 1200ms cubic-bezier(0.16, 1, 0.3, 1) 760ms;
+}
+
+.intro--ready .intro__mockup {
+    transform: translateY(0) scale(1);
 }
 
 .intro__overview {
@@ -124,6 +254,16 @@ body {
     left: 4vw;
     bottom: 15%;
     width: min(360px, 35vw);
+    opacity: 0;
+    transform: translateX(-18px);
+    transition:
+        opacity 760ms ease 1080ms,
+        transform 760ms ease 1080ms;
+}
+
+.intro--ready .intro__overview {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .intro__overview h2 {
@@ -131,15 +271,18 @@ body {
     align-items: center;
     justify-content: center;
     min-width: 300px;
-    min-height: 80px;
+    min-height: 85px;
     margin: 0 0 28px;
     border: 1px solid rgba(255, 255, 255, 0.34);
-    border-radius: 10px;
+    border-radius: 15px;
     color: #ff6b3d;
-    background: rgba(255, 255, 255, 0.04);
-    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(18px);
+    box-shadow:
+        inset 0 0 20px rgba(255, 255, 255, 0.04),
+        0 18px 42px rgba(0, 0, 0, 0.25);
     font-family: 'Pretendard', system-ui, sans-serif;
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 800;
     line-height: 1;
 }
@@ -151,6 +294,22 @@ body {
     font-weight: 500;
     line-height: 1.45;
     word-break: keep-all;
+}
+
+@keyframes intro-sweep {
+    0% {
+        opacity: 0;
+        transform: translateX(-34%);
+    }
+
+    35% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(36%);
+    }
 }
 
 @media (max-width: 900px) {
@@ -168,11 +327,18 @@ body {
     }
 
     .intro__mockup {
+        min-width: 0;
+    }
+
+    .intro__mockup-shell {
         bottom: -74px;
         width: 648px;
-        min-width: 0;
         max-width: 86vw;
-        transform: translateX(-44%);
+        transform:
+            translateX(calc(-44% + var(--mockup-shift-x-mobile)))
+            translateY(var(--mockup-shift-y-mobile))
+            rotateX(var(--mockup-tilt-x))
+            rotateY(var(--mockup-tilt-y));
     }
 
     .intro__overview {
@@ -196,12 +362,17 @@ body {
         font-size: clamp(70px, 24vw, 112px);
     }
 
+    .intro__eyebrow {
+        margin-bottom: 16px;
+        font-size: 10px;
+    }
+
     .intro__copy p,
     .intro__overview p {
         font-size: 12px;
     }
 
-    .intro__mockup {
+    .intro__mockup-shell {
         bottom: 80px;
         width: 504px;
     }
@@ -213,6 +384,23 @@ body {
     .intro__overview h2 {
         margin-bottom: 18px;
     }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .intro,
+    .intro::after,
+    .intro__spotlight,
+    .intro__nav,
+    .intro__eyebrow,
+    .intro__copy h1,
+    .intro__copy p,
+    .intro__mockup-shell,
+    .intro__mockup,
+    .intro__overview {
+        animation: none;
+        transition-duration: 1ms;
+    }
+
 }
 
 @font-face {
