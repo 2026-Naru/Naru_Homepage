@@ -1,0 +1,42 @@
+:root {
+    --pointer-x: 50vw;
+    --pointer-y: 50vh;
+    --bg-shift-x: 0px;
+    --bg-shift-y: 0px;
+    --mockup-shift-x: 0px;
+    --mockup-shift-y: 0px;
+    --mockup-shift-x-mobile: 0px;
+    --mockup-shift-y-mobile: 0px;
+    --mockup-tilt-x: 0deg;
+    --mockup-tilt-y: 0deg;
+}
+
+.global-cursor {
+    position: fixed;
+    left: var(--pointer-x);
+    top: var(--pointer-y);
+    z-index: 100;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, rgba(255, 116, 72, 0.2) 0 8%, rgba(255, 116, 72, 0.1) 24%, transparent 62%);
+    mix-blend-mode: screen;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.86);
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease;
+}
+
+.global-cursor--active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+    .global-cursor {
+        display: none;
+    }
+}
