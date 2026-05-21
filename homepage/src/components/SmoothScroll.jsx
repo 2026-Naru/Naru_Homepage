@@ -2,6 +2,10 @@ import { useEffect } from 'react'
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
 
+const PAGE_SCROLL_DURATION = 760
+const PAGE_SCROLL_COOLDOWN = 160
+const WHEEL_THRESHOLD = 18
+
 const getWheelDelta = (event) => {
   if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
     return event.deltaY * 22
@@ -13,6 +17,8 @@ const getWheelDelta = (event) => {
 
   return event.deltaY * 1.18
 }
+
+const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3)
 
 const canScrollInside = (target, deltaY) => {
   let element = target instanceof Element ? target : null
@@ -48,6 +54,9 @@ export default function SmoothScroll() {
 
     let currentY = window.scrollY
     let targetY = window.scrollY
+    let startY = window.scrollY
+    let startTime = 0
+    let lastScrollAt = 0
     let frameId = 0
     let isAnimating = false
 
@@ -55,13 +64,28 @@ export default function SmoothScroll() {
       document.documentElement.scrollHeight - window.innerHeight
     )
 
-    const update = () => {
-      currentY += (targetY - currentY) * 0.49
+    const getPageTarget = (direction) => {
+      const pageSize = window.innerHeight
+      const currentPage = Math.round(window.scrollY / pageSize)
+      const nextPage = currentPage + direction
 
-      if (Math.abs(targetY - currentY) < 0.8) {
+      return clamp(nextPage * pageSize, 0, getMaxScroll())
+    }
+
+    const update = (timestamp) => {
+      if (!startTime) {
+        startTime = timestamp
+      }
+
+      const progress = clamp((timestamp - startTime) / PAGE_SCROLL_DURATION, 0, 1)
+      currentY = startY + (targetY - startY) * easeOutCubic(progress)
+
+      if (progress >= 1) {
         currentY = targetY
         window.scrollTo({ top: currentY, left: 0, behavior: 'instant' })
         isAnimating = false
+        startTime = 0
+        lastScrollAt = performance.now()
         frameId = 0
         return
       }
@@ -70,12 +94,14 @@ export default function SmoothScroll() {
       frameId = window.requestAnimationFrame(update)
     }
 
-    const start = () => {
+    const start = (nextTargetY) => {
       if (isAnimating) {
         return
       }
 
       isAnimating = true
+      startY = window.scrollY
+      targetY = nextTargetY
       currentY = window.scrollY
       frameId = window.requestAnimationFrame(update)
     }
@@ -86,9 +112,21 @@ export default function SmoothScroll() {
       }
 
       event.preventDefault()
-      const delta = clamp(getWheelDelta(event), -420, 420)
-      targetY = clamp(targetY + delta, 0, getMaxScroll())
-      start()
+      const delta = getWheelDelta(event)
+
+      if (
+        isAnimating
+        || Math.abs(delta) < WHEEL_THRESHOLD
+        || performance.now() - lastScrollAt < PAGE_SCROLL_COOLDOWN
+      ) {
+        return
+      }
+
+      const nextTargetY = getPageTarget(Math.sign(delta))
+
+      if (nextTargetY !== window.scrollY) {
+        start(nextTargetY)
+      }
     }
 
     const handleScroll = () => {
