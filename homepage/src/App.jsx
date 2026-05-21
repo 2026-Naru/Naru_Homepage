@@ -4,6 +4,8 @@ import SmoothScroll from './components/SmoothScroll'
 import Intro from './pages/Intro'
 import Overview from './pages/Overview'
 import Research from './pages/Research'
+import Result from './pages/Result'
+import Ui1 from "./pages/Ui1"
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/" element={<Intro />} />
         <Route path="/overview" element={<Overview />} />
         <Route path='/research' element={<Research /> }/>
+        <Route path='/result' element={<Result /> }/>
+        <Route path='/ui1' element={<Ui1 /> }/>
       </Routes>
     </BrowserRouter>
   )
