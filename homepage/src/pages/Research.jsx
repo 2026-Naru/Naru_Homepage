@@ -1,7 +1,34 @@
+import { useEffect, useRef, useState } from 'react';
 import Map from "../assets/Research/Map.svg";
+import Result from './Result';
 import './Research.css';
 
 export default function Research() {
+    const researchRef = useRef(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const target = researchRef.current;
+
+        if (!target) {
+            return undefined;
+        }
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsVisible(entry.isIntersecting);
+            },
+            {
+                rootMargin: '0px 0px -18% 0px',
+                threshold: 0.18,
+            },
+        );
+
+        observer.observe(target);
+
+        return () => observer.disconnect();
+    }, []);
+
     const area = [
         {
             title : "강남",
@@ -48,59 +75,68 @@ export default function Research() {
     ];
 
     return (
-        <section className="research">
-            <div className="research-inner">
-                <div className="leftsection">
-                    <h2 className="section-title">User Research</h2>
-                    <p className="section-sub">명동 · 성수 · 강남에서 외국인 방문객 21팀을 대상으로 진행한 설문 결과</p>
+        <>
+            <section
+                className={`research${isVisible ? ' research--visible' : ''}`}
+                ref={researchRef}
+            >
+                <div className="research-inner">
+                    <div className="leftsection">
+                        <h2 className="section-title">User Research</h2>
+                        <p className="section-sub">명동 · 성수 · 강남에서 외국인 방문객 21팀을 대상으로 진행한 설문 결과</p>
 
-                    <div className="map-title">
-                        <img src={Map} alt="지도" className="map-img" />
-                        <div className="area-list">
-                            {area.map((a, idx) => (
-                                <div className="area-item" key={idx}>
-                                    <h4 className="area-name">{a.title}</h4>
-                                    <p className="area-desc">{a.description}</p>
+                        <div className="map-title">
+                            <img src={Map} alt="지도" className="map-img" />
+                            <div className="area-list">
+                                {area.map((a, idx) => (
+                                    <div className="area-item" key={idx}>
+                                        <h4 className="area-name">{a.title}</h4>
+                                        <p className="area-desc">{a.description}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="rightsection">
+                        <h2 className="section-title">Project Goal</h2>
+                        <h3 className="goal">
+                            <span className="orange">외국인이</span> 한국음식을
+                            <br /> 막힘 없이 주문하도록
+                        </h3>
+                        <p className="goal-desc">
+                            저희는 실제 인터뷰와 설문을 통해 외국인 관광객이 배달앱에서 가장 자주 막히는
+                            지점이 언어, 결제, 환전이라는 점을 확인했습니다. 나루는 이 문제를 하나의 주문 흐름
+                            안에서 해결해, 외국인도 한국 음식을 더 쉽고 편리하게 경험할 수 있도록 하는 것을 목표로 합니다.
+                        </p>
+
+                        <div className="feature-list">
+                            {feature.map((f, i) => (
+                                <div className="feature-item" key={i}>
+                                    <button className="feature-btn">{f.title}</button>
+                                    <p className="feature-desc">{f.description}</p>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    <h3 className="research-result-heading">Research Result</h3>
-                    <div className="result-list">
-                        {result.map((r) => (
-                            <div className="result-item" key={r.num}>
-                                <div className="result-num">0{r.num}</div>
-                                <div className="result-box">
-                                    <p>{r.description}</p>
+                    <div className="resultsection">
+                        <h3 className="research-result-heading">Research Result</h3>
+                        <div className="result-list">
+                            {result.map((r) => (
+                                <div className="result-item" key={r.num}>
+                                    <div className="result-num">0{r.num}</div>
+                                    <div className="result-box">
+                                        <p>{r.description}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
+            </section>
 
-                <div className="rightsection">
-                    <h2 className="section-title">Project Goal</h2>
-                    <h3 className="goal">
-                        <span className="orange">외국인이</span> 한국음식을
-                        <br /> 막힘 없이 주문하도록
-                    </h3>
-                    <p className="goal-desc">
-                        저희는 실제 인터뷰와 설문을 통해 외국인 관광객이 배달앱에서 가장 자주 막히는
-                        지점이 언어, 결제, 환전이라는 점을 확인했습니다. 나루는 이 문제를 하나의 주문 흐름
-                        안에서 해결해, 외국인도 한국 음식을 더 쉽고 편리하게 경험할 수 있도록 하는 것을 목표로 합니다.
-                    </p>
-
-                    <div className="feature-list">
-                        {feature.map((f, i) => (
-                            <div className="feature-item" key={i}>
-                                <button className="feature-btn">{f.title}</button>
-                                <p className="feature-desc">{f.description}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
+            <Result />
+        </>
     );
 }
