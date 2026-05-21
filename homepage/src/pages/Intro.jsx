@@ -1,21 +1,40 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import hero from '../assets/hero.png'
 import introBackground from '../assets/intro_background.jpg'
 import Overview from './Overview'
 import './Intro.css'
 
 export default function Intro() {
+  const introRef = useRef(null)
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    const frame = requestAnimationFrame(() => setIsReady(true))
-    return () => cancelAnimationFrame(frame)
+    const target = introRef.current
+
+    if (!target) {
+      return undefined
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsReady(entry.isIntersecting)
+      },
+      {
+        rootMargin: '0px 0px -18% 0px',
+        threshold: 0.18,
+      },
+    )
+
+    observer.observe(target)
+
+    return () => observer.disconnect()
   }, [])
 
   return (
     <>
       <main
         className={`intro${isReady ? ' intro--ready' : ''}`}
+        ref={introRef}
         style={{ backgroundImage: `url(${introBackground})` }}
       >
         <div className="intro__spotlight" aria-hidden="true" />
