@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import ResultBg from '../assets/result/Result_bg.png';
 import Ui1 from './Ui1';
+import Ui2 from './Ui2';
+import Ui3 from './Ui3';
+import FeedBack from './FeedBack';
 import './Result.css';
 
 const resultItems = [
@@ -75,6 +78,9 @@ export default function Result() {
             </section>
 
             <Ui1 />
+            <Ui2 />
+            <Ui3 />
+            <FeedBack />
         </>
     );
 }
