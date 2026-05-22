@@ -1,0 +1,285 @@
+@font-face {
+    font-family: 'PartialSans';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/PartialSansKR-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+}
+
+.ui3 {
+    width: 100%;
+    min-height: 100svh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    color: #fff;
+    background:
+        linear-gradient(180deg, #85361e 0%, #43180e 38%, #020202 55%, #020202 100%);
+    font-family: 'Pretendard', system-ui, sans-serif;
+    scrollbar-color: rgba(255, 107, 53, 0.8) rgba(255, 255, 255, 0.08);
+    scrollbar-width: thin;
+}
+
+.ui3::-webkit-scrollbar {
+    height: 10px;
+}
+
+.ui3::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.ui3::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(255, 107, 53, 0.82);
+}
+
+.ui3__stage {
+    position: relative;
+    width: 100vw;
+    min-height: 100svh;
+    margin-left: calc(50% - 50vw);
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.ui3__canvas {
+    position: relative;
+    width: 1366px;
+    height: 768px;
+    transform: scale(var(--ui3-scale));
+    transform-origin: left top;
+}
+
+.ui3__step {
+    position: absolute;
+    z-index: 4;
+    margin: 0;
+    top: 69px;
+    left: 85px;
+    color: #ff7442;
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1;
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity 720ms ease,
+        transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ui3__visual {
+    position: absolute;
+    left: 51px;
+    top: 150px;
+    z-index: 2;
+    width: 650px;
+    height: 570px;
+    opacity: 0;
+    transform: translateY(44px) scale(0.98);
+    transition:
+        opacity 860ms ease 220ms,
+        transform 860ms cubic-bezier(0.22, 1, 0.36, 1) 220ms;
+}
+
+.ui3__linear {
+    position: absolute;
+    left: -4px;
+    bottom: -17px;
+    z-index: 1;
+    width: 673px;
+    height: auto;
+    opacity: 0.94;
+    filter: blur(0.1px);
+}
+
+.ui3__iphone {
+    position: absolute;
+    left: 137px;
+    top: 20px;
+    z-index: 2;
+    width: 476px;
+    height: auto;
+    filter: drop-shadow(0 35px 30px rgba(0, 0, 0, 0.68));
+}
+
+.ui3__copy {
+    position: absolute;
+    top: 151px;
+    left: 738px;
+    z-index: 4;
+    width: 510px;
+    opacity: 0;
+    transform: translateY(34px);
+    transition:
+        opacity 780ms ease 260ms,
+        transform 780ms cubic-bezier(0.22, 1, 0.36, 1) 260ms;
+}
+
+.ui3__copy h1 {
+    margin: 0;
+    color: #fff;
+    font-family: 'PartialSans', 'Pretendard', system-ui, sans-serif;
+    font-size: 33px;
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: 0;
+    text-shadow: 0 16px 34px rgba(0, 0, 0, 0.58);
+    word-break: keep-all;
+    white-space: nowrap;
+}
+
+.ui3__lead {
+    width: 420px;
+    margin: 35px 0 0;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.52;
+    word-break: keep-all;
+}
+
+.ui3__features {
+    display: grid;
+    gap: 38px;
+    margin-top: 40px;
+}
+
+.ui3__feature {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    align-items: start;
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+        opacity 700ms ease,
+        transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(500ms + (var(--ui3-feature-index) * 140ms));
+}
+
+.ui3__feature span {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #ff7442;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.ui3__feature h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.ui3__feature p {
+    margin: 15px 0 0;
+    color: rgba(255, 255, 255, 0.96);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    word-break: keep-all;
+}
+
+.ui3--visible .ui3__step,
+.ui3--visible .ui3__visual,
+.ui3--visible .ui3__copy,
+.ui3--visible .ui3__feature {
+    opacity: 1;
+    transform: none;
+}
+
+@media (max-width: 1125px) {
+    .ui3__stage {
+        margin-left: 0;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 720px) {
+    .ui3 {
+        min-height: 820px;
+    }
+
+    .ui3__stage {
+        width: 900px;
+        min-height: 820px;
+    }
+
+    .ui3__step {
+        top: 54px;
+        left: 42px;
+        font-size: 21px;
+    }
+
+    .ui3__visual {
+        left: -15px;
+        top: 190px;
+        width: 430px;
+        height: 410px;
+    }
+
+    .ui3__linear {
+        left: -24px;
+        bottom: -10px;
+        width: 485px;
+    }
+
+    .ui3__iphone {
+        left: 100px;
+        top: 26px;
+        width: 330px;
+    }
+
+    .ui3__copy {
+        top: 143px;
+        left: 464px;
+        width: 360px;
+    }
+
+    .ui3__copy h1 {
+        font-size: 28px;
+        white-space: normal;
+    }
+
+    .ui3__lead {
+        width: 350px;
+        margin-top: 28px;
+        font-size: 12px;
+    }
+
+    .ui3__features {
+        gap: 30px;
+        margin-top: 34px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ui3__step,
+    .ui3__visual,
+    .ui3__copy,
+    .ui3__feature {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
