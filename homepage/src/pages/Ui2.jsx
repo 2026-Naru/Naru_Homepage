@@ -54,8 +54,8 @@ export default function Ui2() {
 
     useEffect(() => {
         const updateScale = () => {
-            const nextScale = Math.min(window.innerWidth / 1440, window.innerHeight / 813);
-            setScale(Math.max(1, nextScale));
+            const nextScale = Math.min(1, (window.innerWidth - 32) / 1440, window.innerHeight / 813);
+            setScale(Math.max(0.62, nextScale));
         };
 
         updateScale();
@@ -80,7 +80,7 @@ export default function Ui2() {
                     >
                         <path
                             className="ui2__route-path"
-                            d="M1022 38H244C131.9 38 41 122.2 41 226C41 329.8 131.9 414 244 414H832"
+                            d="M1260 38H244C131.9 38 41 122.2 41 226C41 329.8 131.9 414 244 414H832"
                         />
                     </svg>
 
