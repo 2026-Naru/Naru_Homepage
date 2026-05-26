@@ -20,6 +20,7 @@
 }
 
 .feedback {
+    margin-top:130px;
     width: 100vw;
     min-height: 100svh;
     margin-left: calc(50% - 50vw);
@@ -57,7 +58,7 @@
     margin: 0;
     color: #fff;
     font-family: 'PartialSans', 'Pretendard', system-ui, sans-serif;
-    font-size: 34px;
+    font-size: 36px;
     font-weight: 400;
     line-height: 1.08;
     letter-spacing: 0;
@@ -66,11 +67,12 @@
 }
 
 .feedback__intro p {
+    font-family: 'Pretendard';
     width: 468px;
-    margin-top: 54px;
+    margin-top: 55px;
     color: rgba(255, 255, 255, 0.94);
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 500;
     line-height: 1.5;
     text-align: left;
     word-break: keep-all;
@@ -197,11 +199,14 @@
 
 .feedback__wall {
     position: absolute;
-    right: 0;
-    bottom: 106px;
-    left: 0;
+    bottom: 500px;
+    left: 50%;
     display: grid;
+    width: 100vw;
+    margin-left: -50vw;
+    padding: 0 clamp(72px, 5vw, 120px);
     gap: 36px;
+    box-sizing: border-box;
     opacity: 0;
     transform: translateY(40px);
     transition:
@@ -222,11 +227,11 @@
 }
 
 .feedback__marquee--left .feedback__track {
-    animation: feedback-marquee-left 32s linear infinite;
+    animation: feedback-marquee-left 90s linear infinite;
 }
 
 .feedback__marquee--right .feedback__track {
-    animation: feedback-marquee-right 34s linear infinite;
+    animation: feedback-marquee-right 90s linear infinite;
 }
 
 .feedback__card {
