@@ -25,6 +25,8 @@ const splitRows = (comments) => {
     return rows.map((row) => (row.length ? row : comments.slice(0, 3)));
 };
 
+const repeatRow = (row, repeatCount) => Array.from({ length: repeatCount }, () => row).flat();
+
 const loadStoredComments = () => {
     try {
         const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
@@ -66,6 +68,7 @@ export default function FeedBack() {
 
     const comments = useMemo(() => [...savedComments, ...defaultComments], [savedComments]);
     const rows = useMemo(() => splitRows(comments), [comments]);
+    const marqueeRows = useMemo(() => rows.map((row) => repeatRow(row, 4)), [rows]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -132,7 +135,7 @@ export default function FeedBack() {
                 </form>
 
                 <div className="feedback__wall" aria-label="피드백 코멘트">
-                    {rows.map((row, rowIndex) => (
+                    {marqueeRows.map((row, rowIndex) => (
                         <div
                             className={`feedback__marquee feedback__marquee--${rowIndex === 1 ? 'right' : 'left'}`}
                             key={`feedback-row-${rowIndex}`}
