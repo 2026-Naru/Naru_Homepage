@@ -28,7 +28,6 @@ const steps = [
 export default function Ui2() {
     const pageRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
-    const [scale, setScale] = useState(1);
 
     useEffect(() => {
         const target = pageRef.current;
@@ -52,22 +51,10 @@ export default function Ui2() {
         return () => observer.disconnect();
     }, []);
 
-    useEffect(() => {
-        const updateScale = () => {
-            const nextScale = Math.min(1, (window.innerWidth - 32) / 1440, window.innerHeight / 813);
-            setScale(Math.max(0.62, nextScale));
-        };
-
-        updateScale();
-        window.addEventListener('resize', updateScale);
-
-        return () => window.removeEventListener('resize', updateScale);
-    }, []);
-
     return (
         <main className={`ui2${isVisible ? ' ui2--visible' : ''}`} ref={pageRef}>
             <section className="ui2__stage" aria-labelledby="ui2-title">
-                <div className="ui2__canvas" style={{ '--ui2-scale': scale }}>
+                <div className="ui2__canvas">
                     <img className="ui2__union-fallback" src={Union} alt="" aria-hidden="true" />
                     <svg
                         className="ui2__route"

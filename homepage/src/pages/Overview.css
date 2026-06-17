@@ -57,11 +57,11 @@
 
 .overview-page__content {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(420px, 600px);
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 600px);
     gap: clamp(48px, 8vw, 142px);
     align-items: center;
     min-height: 100svh;
-    width: min(1518px, calc(100% - 120px));
+    width: min(1518px, calc(100% - clamp(36px, 7vw, 120px)));
     margin: 0 auto;
     padding: 72px 0;
 }
@@ -92,7 +92,7 @@
     margin: 0;
     color: #fff;
     font-family: 'PartialSans', 'Pretendard', system-ui, sans-serif;
-    font-size: clamp(52px, 4.4vw, 78px);
+    font-size: clamp(52px, 4.4vw, 60px);
     font-weight: 400;
     line-height: 1.16;
     letter-spacing: 0;
@@ -179,7 +179,7 @@
 
 .overview-page__card {
     display: block;
-    width: 120%;
+    width: 100%;
     aspect-ratio: 804 / 397;
     border-radius: 15px;
     object-fit: cover;
@@ -244,6 +244,8 @@
 
     .overview-page__visuals {
         transform: none;
+        width: min(100%, 600px);
+        margin: 0 auto;
     }
 }
 

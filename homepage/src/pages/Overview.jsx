@@ -59,7 +59,7 @@ export default function Overview() {
             <h1 id="overview-title">
               한국인에게 쉬운 주문이,
               <br />
-              <span>외국인에게는 어렵습니다.</span>
+              <span>외국인</span>에게는 어렵습니다.
             </h1>
 
             <p className="overview-page__lead">

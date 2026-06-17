@@ -21,34 +21,18 @@
 
 .ui1 {
     width: 100%;
-    min-height: 1420px;
-    overflow-x: auto;
-    overflow-y: visible;
+    min-height: 100svh;
+    overflow: hidden;
     color: #fff;
     background:
         linear-gradient(180deg, rgba(141, 61, 31, 0.98) 0%, rgba(50, 20, 12, 0.86) 34%, #000 47%, #000 100%);
     font-family: 'Pretendard', system-ui, sans-serif;
-    scrollbar-color: rgba(255, 107, 53, 0.8) rgba(255, 255, 255, 0.08);
-    scrollbar-width: thin;
-}
-
-.ui1::-webkit-scrollbar {
-    height: 10px;
-}
-
-.ui1::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.ui1::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-    background: rgba(255, 107, 53, 0.82);
 }
 
 .ui1__stage {
     position: relative;
-    width: 1280px;
-    min-height: 1420px;
+    width: min(1180px, 100%);
+    min-height: 100svh;
     margin: 0 auto;
     overflow: visible;
     box-sizing: border-box;
@@ -58,7 +42,7 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    padding-top: 135px;
+    padding: clamp(42px, 6vh, 68px) clamp(18px, 4vw, 32px) 0;
     text-align: center;
     opacity: 0;
     transform: translateY(34px);
@@ -68,7 +52,7 @@
 }
 
 .ui1__step {
-    margin: 0 0 45px;
+    margin: 0 0 22px;
     color: #ff6b35;
     font-size: 23px;
     font-weight: 800;
@@ -76,7 +60,7 @@
 }
 
 .ui1__eyebrow {
-    margin: 0 0 22px;
+    margin: 0 0 14px;
     color: rgba(255, 255, 255, 0.92);
     font-size: 12px;
     font-weight: 700;
@@ -87,7 +71,7 @@
     margin: 0;
     color: #fff;
     font-family: 'PartialSans', 'Pretendard', system-ui, sans-serif;
-    font-size: 53px;
+    font-size: clamp(30px, 3vw, 38px);
     font-weight: 400;
     line-height: 1;
     letter-spacing: 0;
@@ -96,7 +80,7 @@
 }
 
 .ui1__lead {
-    margin: 25px 0 0;
+    margin: 18px 0 0;
     color: rgba(255, 255, 255, 0.94);
     font-size: 12px;
     font-weight: 700;
@@ -107,9 +91,9 @@
 .ui1__phone-wrap {
     position: absolute;
     left: 50%;
-    top: 457px;
+    top: clamp(250px, 29vh, 315px);
     z-index: 3;
-    width: 751px;
+    width: min(39vw, 520px);
     transform: translateX(-50%) translateY(42px) scale(0.97);
     opacity: 0;
     transition:
@@ -146,46 +130,46 @@
 }
 
 .ui1__callout--right {
-    left: 812px;
+    left: min(60%, 650px);
 }
 
 .ui1__callout--right-bottom {
-    left: 785px;
+    left: min(58.5%, 628px);
 }
 
 .ui1__callout--left {
-    left: 92px;
+    left: max(32px, 8%);
 }
 
 .ui1__callout--right:not(.ui1__callout--right-bottom) {
-    top: 602px;
-    margin-top: 90px;
-    margin-left: 40px;
+    top: 430px;
+    margin-top: 44px;
+    margin-left: 28px;
 }
 
 .ui1__callout--right-bottom {
-    top: 746px;
+    top: 525px;
 }
 
 .ui1__callout--left {
-    top: 700px;
+    top: 500px;
 }
 
 .ui1__arrow {
-    width: 201px;
+    width: 136px;
     line-height: 0;
     pointer-events: none;
 }
 
 .ui1__callout--left .ui1__arrow {
-    margin-top: 160px;
-    margin-right: 100px;
+    margin-top: 90px;
+    margin-right: 44px;
     order: 2;
-    width: 218px;
+    width: 146px;
 }
 
 .ui1__callout--right-bottom .ui1__arrow {
-    margin-top: 360px;
+    margin-top: 210px;
     transform: translateY(-13px);
 }
 
@@ -201,7 +185,7 @@
 
 .ui1__callout-text {
     order: 2;
-    width: 280px;
+    width: 216px;
     text-align: left;
 }
 
@@ -212,7 +196,7 @@
 }
 
 .ui1__callout-head {
-    font-size: 30px;
+    font-size: 21px;
     display: flex;
     align-items: baseline;
     gap: 20px;
@@ -228,14 +212,14 @@
 .ui1__callout-head span,
 .ui1__callout-head strong {
     color: #fff;
-    font-size: 30px;
+    font-size: 21px;
     font-weight: 800;
     line-height: 1.1;
 }
 
 .ui1__callout-text p {
     color: rgba(255, 255, 255, 0.93);
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 700;
     line-height: 1.38;
     word-break: keep-all;
@@ -254,23 +238,26 @@
 
 @media (max-width: 1125px) {
     .ui1__stage {
-        margin: 0;
+        margin: 0 auto;
     }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
     .ui1 {
-        min-height: 920px;
+        min-height: 100svh;
+        overflow: hidden;
     }
 
     .ui1__stage {
-        width: 900px;
-        min-height: 920px;
-        transform-origin: left top;
+        display: flex;
+        min-height: auto;
+        padding: 72px 20px 84px;
+        flex-direction: column;
+        align-items: center;
     }
 
     .ui1__copy {
-        padding-top: 92px;
+        padding: 0;
     }
 
     .ui1__step {
@@ -279,35 +266,85 @@
     }
 
     .ui1__copy h1 {
-        font-size: 42px;
+        max-width: 100%;
+        font-size: clamp(24px, 6.4vw, 30px);
+        line-height: 1.16;
+        overflow-wrap: anywhere;
+        word-break: break-all;
+    }
+
+    .ui1__lead,
+    .ui1__callout-text p {
+        overflow-wrap: anywhere;
+        word-break: normal;
     }
 
     .ui1__phone-wrap {
-        top: 388px;
-        width: 326px;
+        position: relative;
+        top: auto;
+        left: auto;
+        width: min(420px, 86vw);
+        margin-top: 52px;
+        transform: translateY(42px) scale(0.97);
     }
 
-    .ui1__callout--right {
-        left: 514px;
-        top: 522px;
+    .ui1--visible .ui1__phone-wrap {
+        transform: none;
     }
 
-    .ui1__callout--right-bottom {
-        left: 482px;
-        top: 648px;
+    .ui1__callout {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: min(520px, 100%);
+        margin-top: 22px;
+        padding: 20px;
+        align-items: flex-start;
+        border: 1px solid rgba(255, 107, 53, 0.34);
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.28);
+        backdrop-filter: blur(12px);
     }
 
+    .ui1__callout--right:not(.ui1__callout--right-bottom),
+    .ui1__callout--right-bottom,
     .ui1__callout--left {
-        left: 126px;
-        top: 602px;
+        margin-left: 0;
+        margin-top: 22px;
     }
 
     .ui1__arrow {
-        width: 174px;
+        display: none;
     }
 
-    .ui1__callout--left .ui1__arrow {
-        width: 160px;
+    .ui1__callout-text,
+    .ui1__callout--left .ui1__callout-text {
+        width: 100%;
+        order: 1;
+    }
+
+    .ui1__callout-head,
+    .ui1__callout--left .ui1__callout-head {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 14px;
+        white-space: normal;
+    }
+
+    .ui1__callout-head span,
+    .ui1__callout-head strong {
+        font-size: clamp(20px, 5vw, 26px);
+    }
+}
+
+@media (max-width: 480px) {
+    .ui1__stage {
+        padding-inline: 16px;
+    }
+
+    .ui1__lead,
+    .ui1__callout-text p {
+        font-size: 13px;
     }
 }
 

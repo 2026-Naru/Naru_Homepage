@@ -22,8 +22,7 @@
 .result {
     position: relative;
     min-height: 100svh;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
+    width: 100%;
     overflow: hidden;
     color: #fff;
     background:
@@ -39,8 +38,8 @@
     left: 0;
     bottom: 0;
     z-index: -2;
-    width: 722px;
-    height: 1282px;
+    width: min(722px, 56vw);
+    height: auto;
     object-fit: contain;
     object-position: left bottom;
     opacity: 0;
@@ -64,9 +63,9 @@
 .result__inner {
     display: flex;
     min-height: 100svh;
-    width: min(1160px, calc(100% - 112px));
+    width: min(1160px, calc(100% - clamp(40px, 7vw, 112px)));
     margin: 0 auto;
-    padding: 190px 0 150px;
+    padding: clamp(96px, 16vh, 190px) 0 clamp(80px, 13vh, 150px);
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
@@ -74,7 +73,7 @@
 
 .result__title {
     margin: 0;
-    padding-top: 150px;
+    padding-top: clamp(0px, 12vh, 150px);
     color: #fff;
     font-family: 'PartialSans', 'Pretendard', system-ui, sans-serif;
     font-size: clamp(42px, 4vw, 50px);
@@ -92,15 +91,15 @@
 
 .result__features {
     display: grid;
-    grid-template-columns: repeat(3, 300px);
-    gap: 52px;
-    margin-top: 200px;
+    grid-template-columns: repeat(3, minmax(180px, 300px));
+    gap: clamp(24px, 4vw, 52px);
+    margin-top: clamp(64px, 16vh, 200px);
     justify-content: center;
 }
 
 .result__feature {
     display: flex;
-    width: 300px;
+    width: min(100%, 300px);
     aspect-ratio: 1;
     align-items: center;
     justify-content: center;

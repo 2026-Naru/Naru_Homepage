@@ -20,10 +20,8 @@
 }
 
 .feedback {
-    margin-top:130px;
-    width: 100vw;
+    width: 100%;
     min-height: 100svh;
-    margin-left: calc(50% - 50vw);
     overflow: hidden;
     color: #fff;
     background:
@@ -38,15 +36,15 @@
     min-height: 100svh;
     width: min(100%, 1470px);
     margin: 0 auto;
-    grid-template-columns: 1fr 563px;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 563px);
     grid-template-rows: auto 1fr;
-    column-gap: 150px;
-    padding: 101px 64px 42px;
+    column-gap: clamp(48px, 9vw, 150px);
+    padding: clamp(72px, 10vh, 101px) clamp(24px, 5vw, 64px) 42px;
     box-sizing: border-box;
 }
 
 .feedback__intro {
-    width: 560px;
+    width: min(560px, 100%);
     opacity: 0;
     transform: translateY(34px);
     transition:
@@ -58,7 +56,7 @@
     margin: 0;
     color: #fff;
     font-family: 'PartialSans', 'Pretendard', system-ui, sans-serif;
-    font-size: 36px;
+    font-size: clamp(30px, 3vw, 36px);
     font-weight: 400;
     line-height: 1.08;
     letter-spacing: 0;
@@ -68,7 +66,7 @@
 
 .feedback__intro p {
     font-family: 'Pretendard';
-    width: 468px;
+    width: min(468px, 100%);
     margin-top: 55px;
     color: rgba(255, 255, 255, 0.94);
     font-size: 16px;
@@ -92,7 +90,7 @@
 .feedback__field {
     position: relative;
     display: block;
-    width: 563px;
+    width: min(563px, 100%);
 }
 
 .feedback__field span {
@@ -199,12 +197,12 @@
 
 .feedback__wall {
     position: absolute;
-    bottom: 500px;
+    bottom: clamp(42px, 8vh, 500px);
     left: 50%;
     display: grid;
     width: 100vw;
     margin-left: -50vw;
-    padding: 0 clamp(72px, 5vw, 120px);
+    padding: 0 clamp(18px, 5vw, 120px);
     gap: 36px;
     box-sizing: border-box;
     opacity: 0;
@@ -316,41 +314,55 @@
 
 @media (max-width: 1125px) {
     .feedback__stage {
-        width: 1126px;
-        margin: 0;
+        grid-template-columns: 1fr;
+        width: min(760px, 100%);
+        row-gap: 44px;
+    }
+
+    .feedback__form {
+        justify-items: stretch;
+    }
+
+    .feedback__submit {
+        justify-self: end;
     }
 }
 
 @media (max-width: 720px) {
     .feedback {
-        min-height: 860px;
-        overflow-x: auto;
+        min-height: 100svh;
+        overflow: hidden;
     }
 
     .feedback__stage {
-        width: 900px;
-        min-height: 860px;
-        grid-template-columns: 360px 1fr;
-        column-gap: 54px;
-        padding: 70px 42px 36px;
+        width: 100%;
+        min-height: auto;
+        grid-template-columns: 1fr;
+        column-gap: 0;
+        padding: 70px 18px 280px;
     }
 
     .feedback__intro,
     .feedback__intro p {
-        width: 360px;
+        width: 100%;
     }
 
     .feedback__intro h1 {
-        font-size: 28px;
+        font-size: 25px;
+        line-height: 1.18;
+        overflow-wrap: anywhere;
+        word-break: normal;
     }
 
     .feedback__intro p {
         margin-top: 34px;
         font-size: 12px;
+        overflow-wrap: anywhere;
+        word-break: normal;
     }
 
     .feedback__field {
-        width: 390px;
+        width: 100%;
     }
 
     .feedback__wall {
@@ -359,7 +371,7 @@
     }
 
     .feedback__card {
-        width: 300px;
+        width: min(300px, 78vw);
         height: 74px;
     }
 }

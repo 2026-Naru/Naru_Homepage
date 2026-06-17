@@ -1,11 +1,32 @@
 import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
+const IDLE_SCROLL_DELAY = 120000
+const IDLE_SCROLL_DURATION = 1200
+const PAGE_SCROLL_DURATION = 820
+const PAGE_SCROLL_COOLDOWN = 80
+const WHEEL_THRESHOLD = 4
+const SNAP_TOLERANCE = 10
+const PAGE_SELECTOR = [
+  '.intro',
+  '.overview-page',
+  '.research',
+  '.result',
+  '.ui1',
+  '.ui2',
+  '.ui3',
+  '.feedback',
+].join(', ')
+const USER_ACTIVITY_EVENTS = [
+  'click',
+  'keydown',
+  'mousedown',
+  'mousemove',
+  'pointerdown',
+  'touchstart',
+]
 
-const PAGE_SCROLL_DURATION = 760
-const PAGE_SCROLL_COOLDOWN = 160
-const WHEEL_THRESHOLD = 18
-
+const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3)
 const getWheelDelta = (event) => {
   if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
     return event.deltaY * 22
@@ -15,143 +36,275 @@ const getWheelDelta = (event) => {
     return event.deltaY * window.innerHeight
   }
 
-  return event.deltaY * 1.18
+  return event.deltaY
 }
 
-const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3)
-
-const canScrollInside = (target, deltaY) => {
-  let element = target instanceof Element ? target : null
-
-  while (element && element !== document.body) {
-    const style = window.getComputedStyle(element)
-    const canScroll = /(auto|scroll)/.test(style.overflowY)
-
-    if (canScroll && element.scrollHeight > element.clientHeight) {
-      const isScrollingDown = deltaY > 0
-      const hasDownRoom = element.scrollTop + element.clientHeight < element.scrollHeight
-      const hasUpRoom = element.scrollTop > 0
-
-      if ((isScrollingDown && hasDownRoom) || (!isScrollingDown && hasUpRoom)) {
-        return true
-      }
-    }
-
-    element = element.parentElement
-  }
-
-  return false
-}
+const isEditableTarget = (target) => (
+  target instanceof Element
+  && Boolean(target.closest('input, textarea, select, [contenteditable="true"]'))
+)
 
 export default function SmoothScroll() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [pathname])
+
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches
 
-    if (prefersReducedMotion || hasCoarsePointer) {
-      return undefined
-    }
+    let idleTimerId = 0
+    let idleFrameId = 0
+    let idleStartY = 0
+    let idleStartTime = 0
+    let isIdleReturning = false
+    let pageFrameId = 0
+    let pageStartY = 0
+    let pageTargetY = 0
+    let pageStartTime = 0
+    let lastPageScrollAt = 0
+    let isPageScrolling = false
+    let pageStops = []
+    let wheelIntent = 0
+    let wheelIntentTimer = 0
 
-    let currentY = window.scrollY
-    let targetY = window.scrollY
-    let startY = window.scrollY
-    let startTime = 0
-    let lastScrollAt = 0
-    let frameId = 0
-    let isAnimating = false
-
-    const getMaxScroll = () => (
-      document.documentElement.scrollHeight - window.innerHeight
+    const getMaxScroll = () => Math.max(
+      document.documentElement.scrollHeight - window.innerHeight,
+      0,
     )
 
-    const getPageTarget = (direction) => {
-      const pageSize = window.innerHeight
-      const currentPage = Math.round(window.scrollY / pageSize)
-      const nextPage = currentPage + direction
+    const refreshPageStops = () => {
+      const maxScroll = getMaxScroll()
+      const stops = Array.from(document.querySelectorAll(PAGE_SELECTOR))
+        .map((element) => Math.round(element.getBoundingClientRect().top + window.scrollY))
+        .filter((top) => top >= 0 && top <= maxScroll)
+        .map((top) => Math.min(Math.max(top, 0), maxScroll))
 
-      return clamp(nextPage * pageSize, 0, getMaxScroll())
+      pageStops = [...new Set([0, ...stops, maxScroll].sort((a, b) => a - b))]
     }
 
-    const update = (timestamp) => {
-      if (!startTime) {
-        startTime = timestamp
+    const getPageTarget = (direction) => {
+      const currentY = window.scrollY
+
+      if (direction > 0) {
+        return pageStops.find((stop) => stop > currentY + SNAP_TOLERANCE) ?? getMaxScroll()
       }
 
-      const progress = clamp((timestamp - startTime) / PAGE_SCROLL_DURATION, 0, 1)
-      currentY = startY + (targetY - startY) * easeOutCubic(progress)
+      return [...pageStops].reverse().find((stop) => stop < currentY - SNAP_TOLERANCE) ?? 0
+    }
+
+    const stopIdleReturn = () => {
+      if (!isIdleReturning) {
+        return
+      }
+
+      window.cancelAnimationFrame(idleFrameId)
+      idleFrameId = 0
+      idleStartTime = 0
+      isIdleReturning = false
+    }
+
+    const stopPageScroll = () => {
+      if (!isPageScrolling) {
+        return
+      }
+
+      window.cancelAnimationFrame(pageFrameId)
+      pageFrameId = 0
+      pageStartTime = 0
+      isPageScrolling = false
+    }
+
+    const updatePageScroll = (timestamp) => {
+      if (!pageStartTime) {
+        pageStartTime = timestamp
+      }
+
+      const progress = Math.min((timestamp - pageStartTime) / PAGE_SCROLL_DURATION, 1)
+      const nextY = pageStartY + (pageTargetY - pageStartY) * easeOutCubic(progress)
+
+      window.scrollTo({ top: nextY, left: 0, behavior: 'instant' })
 
       if (progress >= 1) {
-        currentY = targetY
-        window.scrollTo({ top: currentY, left: 0, behavior: 'instant' })
-        isAnimating = false
-        startTime = 0
-        lastScrollAt = performance.now()
-        frameId = 0
+        window.scrollTo({ top: pageTargetY, left: 0, behavior: 'instant' })
+        isPageScrolling = false
+        pageStartTime = 0
+        pageFrameId = 0
+        lastPageScrollAt = performance.now()
         return
       }
 
-      window.scrollTo({ top: currentY, left: 0, behavior: 'instant' })
-      frameId = window.requestAnimationFrame(update)
+      pageFrameId = window.requestAnimationFrame(updatePageScroll)
     }
 
-    const start = (nextTargetY) => {
-      if (isAnimating) {
+    const startPageScroll = (targetY) => {
+      stopIdleReturn()
+      stopPageScroll()
+      isPageScrolling = true
+      pageStartY = window.scrollY
+      pageTargetY = targetY
+      pageFrameId = window.requestAnimationFrame(updatePageScroll)
+    }
+
+    const updateIdleReturn = (timestamp) => {
+      if (!idleStartTime) {
+        idleStartTime = timestamp
+      }
+
+      const progress = Math.min((timestamp - idleStartTime) / IDLE_SCROLL_DURATION, 1)
+      const nextY = idleStartY * (1 - easeOutCubic(progress))
+
+      window.scrollTo({ top: nextY, left: 0, behavior: 'instant' })
+
+      if (progress >= 1) {
+        isIdleReturning = false
+        idleStartTime = 0
+        idleFrameId = 0
         return
       }
 
-      isAnimating = true
-      startY = window.scrollY
-      targetY = nextTargetY
-      currentY = window.scrollY
-      frameId = window.requestAnimationFrame(update)
+      idleFrameId = window.requestAnimationFrame(updateIdleReturn)
+    }
+
+    const returnToTopAfterIdle = () => {
+      if (window.scrollY <= 1) {
+        return
+      }
+
+      stopPageScroll()
+
+      if (prefersReducedMotion) {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+        return
+      }
+
+      stopIdleReturn()
+      idleStartY = window.scrollY
+      isIdleReturning = true
+      idleFrameId = window.requestAnimationFrame(updateIdleReturn)
+    }
+
+    const resetIdleTimer = () => {
+      stopIdleReturn()
+      window.clearTimeout(idleTimerId)
+      idleTimerId = window.setTimeout(returnToTopAfterIdle, IDLE_SCROLL_DELAY)
     }
 
     const handleWheel = (event) => {
-      if (event.ctrlKey || event.metaKey || canScrollInside(event.target, event.deltaY)) {
-        return
-      }
-
-      event.preventDefault()
-      const delta = getWheelDelta(event)
-
       if (
-        isAnimating
-        || Math.abs(delta) < WHEEL_THRESHOLD
-        || performance.now() - lastScrollAt < PAGE_SCROLL_COOLDOWN
+        prefersReducedMotion
+        || hasCoarsePointer
+        || event.ctrlKey
+        || event.metaKey
+        || isEditableTarget(event.target)
       ) {
         return
       }
 
-      const nextTargetY = getPageTarget(Math.sign(delta))
+      const delta = getWheelDelta(event)
 
-      if (nextTargetY !== window.scrollY) {
-        start(nextTargetY)
+      event.preventDefault()
+      wheelIntent += delta
+      window.clearTimeout(wheelIntentTimer)
+      wheelIntentTimer = window.setTimeout(() => {
+        wheelIntent = 0
+      }, 140)
+
+      if (Math.abs(wheelIntent) < WHEEL_THRESHOLD) {
+        return
+      }
+
+      if (
+        isPageScrolling
+        || performance.now() - lastPageScrollAt < PAGE_SCROLL_COOLDOWN
+      ) {
+        return
+      }
+
+      resetIdleTimer()
+
+      if (pageStops.length === 0) {
+        refreshPageStops()
+      }
+
+      const direction = Math.sign(wheelIntent)
+      wheelIntent = 0
+      const nextTargetY = getPageTarget(direction)
+
+      if (Math.abs(nextTargetY - window.scrollY) > 1) {
+        startPageScroll(nextTargetY)
       }
     }
 
-    const handleScroll = () => {
-      if (!isAnimating) {
-        currentY = window.scrollY
-        targetY = window.scrollY
+    const handleKeyDown = (event) => {
+      if (
+        prefersReducedMotion
+        || event.defaultPrevented
+        || event.ctrlKey
+        || event.metaKey
+        || event.altKey
+        || event.code !== 'Space'
+        || isEditableTarget(event.target)
+      ) {
+        return
+      }
+
+      event.preventDefault()
+
+      if (
+        isPageScrolling
+        || performance.now() - lastPageScrollAt < PAGE_SCROLL_COOLDOWN
+      ) {
+        return
+      }
+
+      resetIdleTimer()
+
+      if (pageStops.length === 0) {
+        refreshPageStops()
+      }
+
+      const nextTargetY = getPageTarget(event.shiftKey ? -1 : 1)
+
+      if (Math.abs(nextTargetY - window.scrollY) > 1) {
+        startPageScroll(nextTargetY)
       }
     }
 
     const handleResize = () => {
-      targetY = clamp(targetY, 0, getMaxScroll())
-      currentY = clamp(currentY, 0, getMaxScroll())
+      refreshPageStops()
     }
 
+    const handleLoad = () => {
+      refreshPageStops()
+    }
+
+    refreshPageStops()
     document.addEventListener('wheel', handleWheel, { passive: false })
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', handleResize)
+    document.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('resize', handleResize, { passive: true })
+    window.addEventListener('load', handleLoad, { passive: true })
+    USER_ACTIVITY_EVENTS.forEach((eventName) => {
+      document.addEventListener(eventName, resetIdleTimer, { passive: true })
+    })
+    resetIdleTimer()
 
     return () => {
       document.removeEventListener('wheel', handleWheel)
-      window.removeEventListener('scroll', handleScroll)
+      document.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('resize', handleResize)
-      window.cancelAnimationFrame(frameId)
+      window.removeEventListener('load', handleLoad)
+      USER_ACTIVITY_EVENTS.forEach((eventName) => {
+        document.removeEventListener(eventName, resetIdleTimer)
+      })
+      window.clearTimeout(idleTimerId)
+      window.clearTimeout(wheelIntentTimer)
+      window.cancelAnimationFrame(idleFrameId)
+      window.cancelAnimationFrame(pageFrameId)
     }
-  }, [])
+  }, [pathname])
 
   return null
 }

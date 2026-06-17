@@ -24,7 +24,6 @@ const routeFeatures = [
 export default function Ui3() {
     const pageRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
-    const [scale, setScale] = useState(1);
 
     useEffect(() => {
         const target = pageRef.current;
@@ -48,22 +47,10 @@ export default function Ui3() {
         return () => observer.disconnect();
     }, []);
 
-    useEffect(() => {
-        const updateScale = () => {
-            const nextScale = Math.min(window.innerWidth / 1366, window.innerHeight / 768);
-            setScale(Math.max(1, nextScale));
-        };
-
-        updateScale();
-        window.addEventListener('resize', updateScale);
-
-        return () => window.removeEventListener('resize', updateScale);
-    }, []);
-
     return (
         <main className={`ui3${isVisible ? ' ui3--visible' : ''}`} ref={pageRef}>
             <section className="ui3__stage" aria-labelledby="ui3-title">
-                <div className="ui3__canvas" style={{ '--ui3-scale': scale }}>
+                <div className="ui3__canvas">
                     <p className="ui3__step">Step 03</p>
 
                     <div className="ui3__visual">
@@ -72,7 +59,11 @@ export default function Ui3() {
                     </div>
 
                     <div className="ui3__copy">
-                        <h1 id="ui3-title">먹고 싶은 곳까지, 길을 잃지 않도록</h1>
+                        <h1 id="ui3-title">
+                            먹고 싶은 곳까지,
+                            <br />
+                            길을 잃지 않도록
+                        </h1>
                         <p className="ui3__lead">
                             외국인 관광객에게 음식 경험은 주문에서 끝나지 않습니다. 포장 주문한 음식을 찾으러 가거나, 식사 전후로 주변 장소를 탐색해야 하는 순간이 이어집니다. 나루는 복잡한 지도 대신 검색, 추천, 루트 카드를 제공해 음식 경험 이후의 이동까지 자연스럽게 연결합니다.
                         </p>

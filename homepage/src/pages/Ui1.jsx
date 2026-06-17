@@ -96,7 +96,11 @@ export function Ui1() {
                 <div className="ui1__copy">
                     <p className="ui1__step">Step 01</p>
                     <p className="ui1__eyebrow">주문 페이지</p>
-                    <h1 id="ui1-title">알레르기 정보를 한눈에</h1>
+                    <h1 id="ui1-title">
+                        알레르기 정보를
+                        <br />
+                        한눈에
+                    </h1>
                     <p className="ui1__lead">
                         인터뷰에서 반복적으로 나온 불안 요소를 주문 화면 안에서 먼저 확인할 수 있도록 구성했습니다.
                     </p>

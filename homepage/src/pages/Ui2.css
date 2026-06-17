@@ -20,29 +20,13 @@
 }
 
 .ui2 {
-    margin-top: 20px;
     width: 100%;
-    min-height: 50svh;
+    min-height: 100svh;
     overflow-x: hidden;
     overflow-y: hidden;
     color: #fff;
     background: #000;
     font-family: 'Pretendard', system-ui, sans-serif;
-    scrollbar-color: rgba(255, 107, 53, 0.8) rgba(255, 255, 255, 0.08);
-    scrollbar-width: thin;
-}
-
-.ui2::-webkit-scrollbar {
-    height: 10px;
-}
-
-.ui2::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.ui2::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-    background: rgba(255, 107, 53, 0.82);
 }
 
 .ui2__stage {
@@ -79,12 +63,12 @@
 }
 
 .ui2__canvas {
-    margin-top: 160px;
+    margin-top: 24px;
     position: relative;
     z-index: 2;
     width: 1440px;
     height: 813px;
-    transform: scale(var(--ui2-scale));
+    transform: scale(0.92);
     transform-origin: top center;
 }
 
@@ -295,7 +279,24 @@
     }
 }
 
-@media (max-width: 900px) {
+@media (min-width: 1181px) and (max-width: 1500px) {
+    .ui2__canvas {
+        margin-top: 18px;
+        transform: scale(0.82);
+    }
+
+    .ui2__step {
+        margin-left: -96px;
+    }
+
+    .ui2__copy h1,
+    .ui2__lead,
+    .ui2__list {
+        margin-left: -58px;
+    }
+}
+
+@media (max-width: 1180px) {
     .ui2 {
         min-height: 100svh;
         overflow-y: auto;
@@ -316,7 +317,6 @@
         height: auto;
         min-height: 100svh;
         padding: 50px 0 80px;
-        transform: none !important;
         box-sizing: border-box;
     }
 
@@ -340,18 +340,24 @@
     }
 
     .ui2__copy h1 {
+        margin-left: 0;
         max-width: 100%;
-        font-size: clamp(21px, 5.6vw, 26px);
+        font-size: clamp(22px, 6vw, 28px);
+        line-height: 1.18;
         white-space: normal;
         overflow-wrap: anywhere;
+        word-break: normal;
     }
 
     .ui2__lead {
         width: min(100%, 360px);
         margin-left: 0;
+        overflow-wrap: anywhere;
+        word-break: normal;
     }
 
     .ui2__list {
+        margin-left: 0;
         gap: 26px;
         margin-top: 52px;
     }
@@ -365,12 +371,20 @@
         font-size: 52px;
     }
 
+    .ui2__item h2,
+    .ui2__item p,
+    .ui2__visual-copy strong {
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
     .ui2__visual-copy {
         position: relative;
         top: auto;
         left: auto;
         width: min(100%, 360px);
         margin: 64px auto 0;
+        text-align: left;
     }
 
     .ui2__route {
@@ -401,6 +415,25 @@
         align-self: center;
         width: min(52vw, 176px);
         margin-top: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ui2__stage {
+        padding-inline: 16px;
+    }
+
+    .ui2__item {
+        grid-template-columns: 52px 1fr;
+    }
+
+    .ui2__item strong {
+        font-size: 44px;
+    }
+
+    .ui2__item h2,
+    .ui2__item p {
+        margin-left: 0;
     }
 }
 
