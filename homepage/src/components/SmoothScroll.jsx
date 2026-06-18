@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-const IDLE_SCROLL_DELAY = 120000
+const IDLE_SCROLL_DELAY = 60000
 const IDLE_SCROLL_DURATION = 1200
 const PAGE_SCROLL_DURATION = 820
 const PAGE_SCROLL_COOLDOWN = 80
