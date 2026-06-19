@@ -65,6 +65,11 @@ export default function Intro() {
           </div>
         </section>
 
+        <a className="intro__scroll-cue" href="#overview-title" aria-label="Scroll to overview">
+          <span>Scroll</span>
+          <i aria-hidden="true" />
+        </a>
+
         <aside className="intro__overview" id="delivery">
           <h2>OverView</h2>
           <p>

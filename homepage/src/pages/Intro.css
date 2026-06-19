@@ -207,9 +207,67 @@ body {
         transform 780ms ease 830ms;
 }
 
+.intro__scroll-cue {
+    position: absolute;
+    right: clamp(82px, 9vw, 150px);
+    top: clamp(430px, 61vh, 590px);
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 52px;
+    min-height: 150px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+        opacity 720ms ease 1040ms,
+        transform 720ms ease 1040ms,
+        color 180ms ease;
+}
+
+.intro__scroll-cue span {
+    writing-mode: vertical-rl;
+    letter-spacing: 0;
+}
+
+.intro__scroll-cue::after {
+    content: '';
+    width: 2px;
+    height: 84px;
+    background: linear-gradient(180deg, #ff6b3d, rgba(255, 255, 255, 0));
+    box-shadow: 0 0 18px rgba(255, 107, 61, 0.45);
+}
+
+.intro__scroll-cue i {
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    animation: intro-scroll-cue 1500ms ease-in-out infinite;
+}
+
+.intro__scroll-cue:hover,
+.intro__scroll-cue:focus-visible {
+    color: rgba(255, 107, 61, 0.95);
+}
+
+.intro__scroll-cue:focus-visible {
+    outline: 2px solid rgba(255, 132, 92, 0.72);
+    outline-offset: 5px;
+}
+
 .intro--ready .intro__eyebrow,
 .intro--ready .intro__copy h1,
-.intro--ready .intro__copy p {
+.intro--ready .intro__copy p,
+.intro--ready .intro__scroll-cue {
     opacity: 1;
     transform: translateY(0) scale(1);
 }
@@ -313,6 +371,19 @@ body {
     }
 }
 
+@keyframes intro-scroll-cue {
+    0%,
+    100% {
+        opacity: 0.55;
+        transform: translateY(-2px) rotate(45deg);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(4px) rotate(45deg);
+    }
+}
+
 @media (max-width: 900px) {
     .intro {
         min-height: max(100svh, 760px);
@@ -347,6 +418,17 @@ body {
         right: 24px;
         bottom: 32px;
         width: auto;
+    }
+
+    .intro__scroll-cue {
+        right: 22px;
+        top: auto;
+        bottom: 112px;
+        min-height: 112px;
+    }
+
+    .intro__scroll-cue::after {
+        height: 58px;
     }
 }
 
@@ -405,6 +487,14 @@ body {
         font-size: 12px;
     }
 
+    .intro__scroll-cue {
+        right: 16px;
+        bottom: 126px;
+        width: 40px;
+        min-height: 96px;
+        font-size: 10px;
+    }
+
     .intro__mockup-shell {
         bottom: 84px;
         width: min(504px, 112vw);
@@ -447,7 +537,9 @@ body {
     .intro__copy p,
     .intro__mockup-shell,
     .intro__mockup,
-    .intro__overview {
+    .intro__overview,
+    .intro__scroll-cue,
+    .intro__scroll-cue i {
         animation: none;
         transition-duration: 1ms;
     }
