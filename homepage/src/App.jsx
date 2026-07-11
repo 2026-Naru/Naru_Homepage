@@ -1,14 +1,25 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import GlobalCursor from './components/GlobalCursor'
 import SmoothScroll from './components/SmoothScroll'
-import Intro from './pages/Intro'
+import Home from './pages/Home'
 import Overview from './pages/Overview'
 import Research from './pages/Research'
 import Result from './pages/Result'
-import Ui1 from "./pages/Ui1"
+import Ui1 from './pages/Ui1'
 import Ui2 from './pages/Ui2'
 import Ui3 from './pages/Ui3'
 import FeedBack from './pages/FeedBack'
+
+const routes = [
+  { path: '/', element: <Home /> },
+  { path: '/overview', element: <Overview /> },
+  { path: '/research', element: <Research /> },
+  { path: '/result', element: <Result /> },
+  { path: '/ui1', element: <Ui1 /> },
+  { path: '/ui2', element: <Ui2 /> },
+  { path: '/ui3', element: <Ui3 /> },
+  { path: '/feedback', element: <FeedBack /> },
+]
 
 function App() {
   return (
@@ -16,14 +27,9 @@ function App() {
       <SmoothScroll />
       <GlobalCursor />
       <Routes>
-        <Route path="/" element={<Intro />} />
-        <Route path="/overview" element={<Overview />} />
-        <Route path='/research' element={<Research /> }/>
-        <Route path='/result' element={<Result /> }/>
-        <Route path='/ui1' element={<Ui1 /> }/>
-        <Route path='/ui2' element={<Ui2 /> }/>
-        <Route path='/ui3' element={<Ui3 /> }/>
-        <Route path='/feedback' element={<FeedBack /> }/>
+        {routes.map((route) => (
+          <Route path={route.path} element={route.element} key={route.path} />
+        ))}
       </Routes>
     </BrowserRouter>
   )
