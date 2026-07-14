@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
+import useInView from '../hooks/useInView';
 import './FeedBack.css';
 
 const STORAGE_KEY = 'naru-feedback-comments';
@@ -28,6 +29,10 @@ const splitRows = (comments) => {
 const repeatRow = (row, repeatCount) => Array.from({ length: repeatCount }, () => row).flat();
 
 const loadStoredComments = () => {
+    if (typeof localStorage === 'undefined') {
+        return [];
+    }
+
     try {
         const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
 
@@ -38,33 +43,13 @@ const loadStoredComments = () => {
 };
 
 export default function FeedBack() {
-    const pageRef = useRef(null);
-    const [isVisible, setIsVisible] = useState(false);
+    const [pageRef, isVisible] = useInView({
+        rootMargin: '0px 0px -14% 0px',
+        threshold: 0.14,
+    });
     const [nickname, setNickname] = useState('');
     const [body, setBody] = useState('');
     const [savedComments, setSavedComments] = useState(loadStoredComments);
-
-    useEffect(() => {
-        const target = pageRef.current;
-
-        if (!target) {
-            return undefined;
-        }
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setIsVisible(entry.isIntersecting);
-            },
-            {
-                rootMargin: '0px 0px -14% 0px',
-                threshold: 0.14,
-            },
-        );
-
-        observer.observe(target);
-
-        return () => observer.disconnect();
-    }, []);
 
     const comments = useMemo(() => [...savedComments, ...defaultComments], [savedComments]);
     const rows = useMemo(() => splitRows(comments), [comments]);
@@ -88,7 +73,11 @@ export default function FeedBack() {
         const nextComments = [nextComment, ...savedComments].slice(0, 18);
 
         setSavedComments(nextComments);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(nextComments));
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(nextComments));
+        } catch {
+            // Keep the on-screen feedback even when browser storage is unavailable.
+        }
         setNickname('');
         setBody('');
     };
