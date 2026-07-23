@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
 import './Ui1.css';
 import Phoneimg from '../assets/UI/step01_phone.png';
+import useInView from '../hooks/useInView';
 
 const callouts = [
     {
@@ -65,30 +65,10 @@ function RightArrow() {
 }
 
 export function Ui1() {
-    const pageRef = useRef(null);
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const target = pageRef.current;
-
-        if (!target) {
-            return undefined;
-        }
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setIsVisible(entry.isIntersecting);
-            },
-            {
-                rootMargin: '0px 0px -12% 0px',
-                threshold: 0.12,
-            },
-        );
-
-        observer.observe(target);
-
-        return () => observer.disconnect();
-    }, []);
+    const [pageRef, isVisible] = useInView({
+        rootMargin: '0px 0px -12% 0px',
+        threshold: 0.12,
+    });
 
     return (
         <main className={`ui1${isVisible ? ' ui1--visible' : ''}`} ref={pageRef}>
