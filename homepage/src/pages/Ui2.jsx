@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
 import './Ui2.css';
 import Union from '../assets/UI/step02_union.svg';
 import rightiphone from '../assets/UI/step02_iphoneMockup.png';
@@ -6,6 +5,7 @@ import addition1 from '../assets/UI/step02_addition1.png';
 import addition2 from '../assets/UI/step02_addition2.png';
 import addition3 from '../assets/UI/step02_addition3.png';
 import addition4 from '../assets/UI/step02_addition4.png';
+import useInView from '../hooks/useInView';
 
 const steps = [
     {
@@ -26,30 +26,10 @@ const steps = [
 ];
 
 export default function Ui2() {
-    const pageRef = useRef(null);
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const target = pageRef.current;
-
-        if (!target) {
-            return undefined;
-        }
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setIsVisible(entry.isIntersecting);
-            },
-            {
-                rootMargin: '0px 0px -14% 0px',
-                threshold: 0.14,
-            },
-        );
-
-        observer.observe(target);
-
-        return () => observer.disconnect();
-    }, []);
+    const [pageRef, isVisible] = useInView({
+        rootMargin: '0px 0px -14% 0px',
+        threshold: 0.14,
+    });
 
     return (
         <main className={`ui2${isVisible ? ' ui2--visible' : ''}`} ref={pageRef}>
