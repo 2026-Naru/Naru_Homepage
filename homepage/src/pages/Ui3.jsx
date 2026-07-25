@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
 import './Ui3.css';
 import iphone from '../assets/UI/step03_iphoneMockup.png';
 import linear from '../assets/UI/step03_linearbg.png';
+import useInView from '../hooks/useInView';
 
 const routeFeatures = [
     {
@@ -22,30 +22,10 @@ const routeFeatures = [
 ];
 
 export default function Ui3() {
-    const pageRef = useRef(null);
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const target = pageRef.current;
-
-        if (!target) {
-            return undefined;
-        }
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setIsVisible(entry.isIntersecting);
-            },
-            {
-                rootMargin: '0px 0px -14% 0px',
-                threshold: 0.14,
-            },
-        );
-
-        observer.observe(target);
-
-        return () => observer.disconnect();
-    }, []);
+    const [pageRef, isVisible] = useInView({
+        rootMargin: '0px 0px -14% 0px',
+        threshold: 0.14,
+    });
 
     return (
         <main className={`ui3${isVisible ? ' ui3--visible' : ''}`} ref={pageRef}>
